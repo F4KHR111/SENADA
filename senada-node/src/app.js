@@ -11,6 +11,9 @@ const logger       = require('./utils/logger')
 
 const app = express()
 
+// Trust proxy WAJIB untuk Vercel / reverse proxy agar express-rate-limit tidak error
+app.set('trust proxy', 1)
+
 // ── Security ──────────────────────────────────────────────────────────────
 app.use(helmet())
 app.use(cors(corsOptions))
@@ -20,13 +23,40 @@ app.use(cookieParser())
 app.use(express.json({ limit: '5mb' }))
 app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 
-// ── Rate limiter umum ─────────────────────────────────────────────────────
-app.use('/api', generalRateLimiter)
+// ── Root info ─────────────────────────────────────────────────────────────
+app.get('/', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'SENADA API is running on Vercel.',
+    environment: process.env.NODE_ENV || 'development',
+    serverless: !!process.env.VERCEL,
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      hps: '/api/hps',
+      undangan: '/api/undangan',
+    },
+  })
+})
 
 // ── Health check ──────────────────────────────────────────────────────────
-app.get('/health', (_req, res) => {
-  res.json({ success: true, message: 'SENADA API is running.' })
+app.get('/health', async (_req, res) => {
+  try {
+    const { sequelize } = require('./config/db')
+    await sequelize.authenticate()
+    res.json({ success: true, message: 'SENADA API is healthy. Database connected.', db: 'connected' })
+  } catch (err) {
+    res.status(200).json({
+      success: true,
+      message: 'SENADA API is running, but database connection is pending or unreachable.',
+      db: 'disconnected',
+      dbError: err.message,
+    })
+  }
 })
+
+// ── Rate limiter umum ─────────────────────────────────────────────────────
+app.use('/api', generalRateLimiter)
 
 // ── Routes ───────────────────────────────────────────────────────────────
 // CATATAN KEAMANAN: Semua route WAJIB menggunakan prefix /api/ (AGENTS.md §6).
