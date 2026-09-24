@@ -59,7 +59,7 @@ module.exports = {
     logging:        false,
     dialectOptions: {
       timezone: '+07:00',
-      ssl: { rejectUnauthorized: true },
+      ...(process.env.DB_SSL !== 'false' ? { ssl: { require: true, rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' } } : {}),
     },
     define: {
       underscored: true,

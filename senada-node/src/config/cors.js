@@ -15,6 +15,7 @@ const corsOptions = {
     if (!origin) return callback(null, true)
     if (
       allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
       origin.endsWith('.ngrok-free.app') ||
       origin.endsWith('.ngrok.app') ||
       origin.endsWith('.ngrok.io') ||

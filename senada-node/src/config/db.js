@@ -31,8 +31,9 @@ const sequelize = new Sequelize(
       : false,
     dialectOptions: {
       timezone: '+07:00',
-      // Koneksi XAMPP tidak pakai SSL — hilangkan di production managed DB
-      ...(env.nodeEnv === 'production' ? { ssl: { rejectUnauthorized: true } } : {}),
+      ...(process.env.DB_SSL === 'true' || (env.nodeEnv === 'production' && process.env.DB_SSL !== 'false')
+        ? { ssl: { require: true, rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' } }
+        : {}),
     },
     define: {
       underscored: true,  // nama kolom snake_case (nama_barang, bukan namaBarang)
