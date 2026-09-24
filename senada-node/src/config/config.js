@@ -56,6 +56,7 @@ module.exports = {
     host:           process.env.DB_HOST,
     port:           parseInt(process.env.DB_PORT) || 3306,
     dialect:        'mysql',
+    dialectModule:  require('mysql2'),
     logging:        false,
     dialectOptions: {
       timezone: '+07:00',

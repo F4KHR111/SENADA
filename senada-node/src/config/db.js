@@ -3,6 +3,7 @@
 require('dotenv').config()
 
 const { Sequelize } = require('sequelize')
+const mysql2        = require('mysql2')
 const env           = require('./env')
 
 /**
@@ -23,9 +24,10 @@ const sequelize = new Sequelize(
   env.db.user,
   env.db.password || null,
   {
-    host:    env.db.host,
-    port:    env.db.port,
-    dialect: 'mysql',
+    host:          env.db.host,
+    port:          env.db.port,
+    dialect:       'mysql',
+    dialectModule: mysql2, // WAJIB untuk Vercel Serverless / NFT bundler
     logging: env.nodeEnv === 'development'
       ? (sql) => require('./env') && require('../utils/logger').debug(`[SQL] ${sql}`)
       : false,
