@@ -2,7 +2,7 @@
     "name": "senada-node",
     "version": "1.0.0",
     "description": "",
-    "main": "server.js",
+    "main": "index.js",
     "scripts": {
         "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
         "db:seed:all": "npx sequelize-cli db:seed:all",
