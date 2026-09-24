@@ -5,10 +5,14 @@ const path   = require('path')
 const fs     = require('fs')
 const crypto = require('crypto')
 
-// Pastikan direktori uploads ada
-const uploadDir = path.resolve('uploads')
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true })
+// Pastikan direktori uploads ada (gunakan /tmp/uploads jika di Vercel Serverless)
+const uploadDir = process.env.VERCEL ? path.join('/tmp', 'uploads') : path.resolve('uploads')
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true })
+  }
+} catch (_err) {
+  // Abaikan jika folder sudah ada atau tidak bisa dibuat saat init
 }
 
 // Konfigurasi penyimpanan disk
