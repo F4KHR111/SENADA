@@ -23,17 +23,17 @@ app.use(cookieParser())
 app.use(express.json({ limit: '5mb' }))
 app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 
-// ── Auto-Migrate & Seed (Vercel Postgres & MySQL) ──────────────────────────
+// ── Auto-Migrate & Seed (Setup endpoint jika sewaktu-waktu dibutuhkan) ────
 const db = require('./models')
 const { initDatabase } = require('./config/autoMigrate')
 
-app.use(async (_req, _res, next) => {
+app.get('/api/setup/init-db', async (_req, res) => {
   try {
     await initDatabase(db)
+    res.json({ success: true, message: 'Database schema and seed verified.' })
   } catch (err) {
-    logger.error('Database auto-init error:', err)
+    res.status(500).json({ success: false, error: err.message })
   }
-  next()
 })
 
 // ── Root info ─────────────────────────────────────────────────────────────
