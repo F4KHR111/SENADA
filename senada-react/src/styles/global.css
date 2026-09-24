@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+/* ============================================================
+   SENADA — Design System Global CSS (AGENTS.md §7)
+   Palet: navy-900 #0B1E3D, navy-700 #1B3A66, navy-500 #2E5090
+   Font : Inter, Plus Jakarta Sans
+   ============================================================ */
+
+@theme {
+  --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --color-navy-900: #0B1E3D;
+  --color-navy-700: #1B3A66;
+  --color-navy-500: #2E5090;
+
+  --color-white:    #FFFFFF;
+  --color-gray-50:  #F7F8FA;
+  --color-gray-100: #F2F4F7;
+  --color-gray-200: #E4E7EC;
+  --color-gray-300: #D0D5DD;
+  --color-gray-400: #98A2B3;
+  --color-gray-500: #667085;
+  --color-gray-600: #475467;
+  --color-gray-700: #344054;
+  --color-gray-800: #1D2939;
+  --color-gray-900: #101828;
+
+  --color-success:        #1E7F52;
+  --color-success-light:  #E8F5E9;
+  --color-success-border: #A3D9A5;
+
+  --color-danger:        #C1362E;
+  --color-danger-light:  #FDE8E7;
+  --color-danger-border: #F5A3A0;
+
+  --color-warning:        #B7791F;
+  --color-warning-light:  #FEF3D6;
+  --color-warning-border: #F5D380;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 14px;
+    background-color: var(--color-gray-50, #F7F8FA);
+    color: var(--color-navy-900, #0B1E3D);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ============================================================
+   SENADA — Design System Global CSS (AGENTS.md §7)
+   Palet: navy-900 #0B1E3D, navy-700 #1B3A66, navy-500 #2E5090
+   Font : Inter, Plus Jakarta Sans
+   ============================================================ */
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(228, 231, 236, 0.8);
+}
+
+.card-luxury {
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(228, 231, 236, 0.85);
+  box-shadow: 0 1px 3px rgba(11, 30, 61, 0.03), 0 6px 16px rgba(11, 30, 61, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-luxury:hover {
+  border-color: rgba(46, 80, 144, 0.25);
+  box-shadow: 0 4px 12px rgba(11, 30, 61, 0.06), 0 12px 28px rgba(11, 30, 61, 0.03);
+}
+
+/* ============================================================
+   Scrollbar minimal
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(46, 80, 144, 0.20);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 80, 144, 0.45);
+}
+
