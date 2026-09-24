@@ -27,10 +27,24 @@ app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 const db = require('./models')
 const { initDatabase } = require('./config/autoMigrate')
 
-app.get('/api/setup/init-db', async (_req, res) => {
+let dbInitChecked = false
+app.use(async (req, res, next) => {
+  if (!dbInitChecked && !req.path.startsWith('/health')) {
+    try {
+      await initDatabase(db)
+      dbInitChecked = true
+    } catch (err) {
+      logger.error('Auto init database error:', err)
+    }
+  }
+  next()
+})
+
+app.get('/api/setup/init-db', async (req, res) => {
   try {
-    await initDatabase(db)
-    res.json({ success: true, message: 'Database schema and seed verified.' })
+    const force = req.query.force === 'true'
+    await initDatabase(db, force)
+    res.json({ success: true, message: 'Database schema, roles, and permissions initialized.' })
   } catch (err) {
     res.status(500).json({ success: false, error: err.message })
   }
