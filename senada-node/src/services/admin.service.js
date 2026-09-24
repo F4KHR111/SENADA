@@ -1,6 +1,6 @@
 'use strict'
 
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const { Op } = require('sequelize')
 const { User, Role, UserRole, VendorProfile, AuditLog, sequelize } = require('../models')
 const { auditLog } = require('../audit/auditLogger')
