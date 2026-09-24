@@ -23,6 +23,19 @@ app.use(cookieParser())
 app.use(express.json({ limit: '5mb' }))
 app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 
+// ── Auto-Migrate & Seed (Vercel Postgres & MySQL) ──────────────────────────
+const db = require('./models')
+const { initDatabase } = require('./config/autoMigrate')
+
+app.use(async (_req, _res, next) => {
+  try {
+    await initDatabase(db)
+  } catch (err) {
+    logger.error('Database auto-init error:', err)
+  }
+  next()
+})
+
 // ── Root info ─────────────────────────────────────────────────────────────
 app.get('/', (_req, res) => {
   res.json({
@@ -44,7 +57,13 @@ app.get('/health', async (_req, res) => {
   try {
     const { sequelize } = require('./config/db')
     await sequelize.authenticate()
-    res.json({ success: true, message: 'SENADA API is healthy. Database connected.', db: 'connected' })
+    const dialect = sequelize.getDialect()
+    res.json({
+      success: true,
+      message: `SENADA API is healthy. Database (${dialect}) connected.`,
+      db: 'connected',
+      dialect,
+    })
   } catch (err) {
     res.status(200).json({
       success: true,
