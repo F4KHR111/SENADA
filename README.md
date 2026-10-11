@@ -2,6 +2,8 @@
 
 SENADA adalah aplikasi web internal untuk mendigitalisasi proses pengadaan barang dan jasa instansi, mulai dari penyusunan HPS (Harga Perkiraan Sendiri), penerbitan undangan ke penyedia, negosiasi harga, penerbitan SPK/Surat Pesanan, serah terima barang, hingga integrasi data pelaporan realisasi keuangan dan SPM.
 
+> 📘 **Panduan Pengguna Lengkap**: Pelajari tata cara penggunaan per peran (PPK, PBJ, Penyedia, PPSPM, Petugas Laporan, Admin) dan akun demo siap pakai di **[PANDUAN_PENGGUNA.md](PANDUAN_PENGGUNA.md)**.
+
 ---
 
 ## 🏛️ Arsitektur & Alur Bisnis
