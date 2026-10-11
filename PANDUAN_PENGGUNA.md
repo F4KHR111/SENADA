@@ -24,19 +24,47 @@ Selamat datang di **SENADA (Sistem Pengadaan Barang dan Jasa)** — platform web
 
 SENADA menerapkan sistem **State Machine** berurutan tanpa mengizinkan lompat tahap demi menjaga akuntabilitas dokumen dan audit trail:
 
-```mermaid
-flowchart TD
-    A[1. HPS Dibuat oleh PPK] -->|Submit ke PBJ| B[2. Verifikasi HPS oleh PBJ]
-    B -->|Status: Fixed| C[3. Pembuatan Undangan oleh PBJ]
-    C -->|Undang Rekanan| D[4. Rekanan Input Penawaran Harga]
-    D -->|Kirim Penawaran| E[5. Negosiasi Harga oleh PBJ & Rekanan]
-    E -->|Sepakat / Approved| F[6. Penerbitan & TTD SPK oleh PPK]
-    F -->|SPK Aktif| G[7. Pelaksanaan & Pengiriman oleh Rekanan]
-    G -->|Upload Surat Jalan| H[8. BAST & BAP oleh PPK]
-    H -->|Selesai & Evaluasi Vendor| I[9. Resume SPK Terbit]
-    I -->|Data SAKTI| J[10. PPSPM Input Nomor SPM]
-    I -->|Realisasi Anggaran| K[11. Petugas Catat Realisasi Keuangan]
+```text
+┌────────────────────────┐      ┌────────────────────────┐      ┌────────────────────────┐
+│  1. HPS Disusun (PPK)  │ ───► │ 2. Verifikasi HPS(PBJ) │ ───► │ 3. Undangan Dibuat(PBJ)│
+└────────────────────────┘      └────────────────────────┘      └───────────┬────────────┘
+                                                                            │
+┌────────────────────────┐      ┌────────────────────────┐      ┌───────────▼────────────┐
+│ 6. SPK Diterbitkan(PPK)│ ◄─── │ 5. Negosiasi Harga     │ ◄─── │ 4. Penawaran Vendor    │
+└───────────┬────────────┘      └────────────────────────┘      └────────────────────────┘
+            │
+            ▼
+┌────────────────────────┐      ┌────────────────────────┐
+│ 7. Pengiriman & Bukti  │ ───► │ 8. BAST, BAP &         │
+│    Surat Jalan (Vendor)│      │    Penilaian PPK       │
+└────────────────────────┘      └───────────┬────────────┘
+                                            │
+                                            ▼
+                                ┌────────────────────────┐
+                                │ 9. Resume SPK Terbit   │
+                                └───────────┬────────────┘
+                                            │
+                    ┌───────────────────────┴───────────────────────┐
+                    ▼                                               ▼
+      ┌───────────────────────────┐                   ┌───────────────────────────┐
+      │ 10. Input Nomor SPM SAKTI │                   │ 11. Input Realisasi Dana  │
+      │     (Role: PPSPM)         │                   │     (Role: Petugas Laporan│
+      └───────────────────────────┘                   └───────────────────────────┘
 ```
+
+#### 📋 Tabel Tahapan & Penanggung Jawab
+| Tahap | Nama Tahapan | Penanggung Jawab (Role) | Keterangan & Status |
+|:---:|---|:---:|---|
+| **1** | **Penyusunan Paket HPS** | 🟢 **PPK** | Penyusunan rincian barang, volume & harga (Status: *Draft*) |
+| **2** | **Verifikasi HPS** | 🔵 **PBJ** | Penelaahan kewajaran harga & penguncian data (Status: *Fixed*) |
+| **3** | **Penerbitan Undangan** | 🔵 **PBJ** | Pembuatan paket undangan ke rekanan terpilih (Status: *Sent*) |
+| **4** | **Pemasukan Penawaran** | 🟡 **Penyedia / Rekanan** | Pengisian harga penawaran & upload dokumen bertanda tangan |
+| **5** | **Negosiasi Harga** | 🔵 **PBJ** & 🟡 **Penyedia** | Tawar-menawar harga resmi & transparan hingga disepakati |
+| **6** | **Penerbitan & TTD SPK** | 🟢 **PPK** | Penerbitan SPK/Surat Pesanan dengan meterai & TTD resmi |
+| **7** | **Pelaksanaan & Pengiriman** | 🟡 **Penyedia / Rekanan** | Penyerahan barang/jasa & upload scan Surat Jalan fisik |
+| **8** | **Serah Terima (BAST & BAP)** | 🟢 **PPK** | Pemeriksaan fisik, penerbitan BAST/BAP & rating vendor (1–5) |
+| **9** | **Integrasi SPM & Laporan** | 🟣 **PPSPM** & 🟠 **Petugas** | Input nomor SPM SAKTI dan pencatatan serapan anggaran kas |
+
 
 ### Aturan Pokok:
 - **Zero Public Page**: Seluruh halaman wajib login (kecuali `/login`).
