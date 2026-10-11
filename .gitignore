@@ -67,3 +67,7 @@ ehthumbs.db
 *.sln
 *.sw?
 *.bak
+
+# AI Coding Agents & Prompts
+AGENTS.md
+AGENT.md
