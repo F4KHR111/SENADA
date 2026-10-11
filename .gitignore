@@ -50,6 +50,9 @@ pnpm-debug.log*
 uploads/*
 **/uploads/*
 !**/uploads/.gitkeep
+*.xlsx
+*.xls
+*.csv
 
 # Operating System Files
 .DS_Store
